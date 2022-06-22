@@ -44,8 +44,6 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   devServer: {
-    historyApiFallback: {
-      index: 'index.html',
-    },
+    historyApiFallback: true,
   },
 };
