@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 
 const MenuImage = styled.div(
-  {
+  ({ url }) => ({
     margin: '30px auto',
     borderRadius: '50%',
     width: '300px',
     height: '300px',
-  },
-  (props) => ({
-    background: `url("https://coffee-and-taste.kro.kr${props.url}") center/100% no-repeat`,
+    ...(url && {
+      background: `url("https://coffee-and-taste.kro.kr${url}") center/100% no-repeat`,
+    }),
   }),
 );
 
@@ -41,15 +41,19 @@ const OrderButton = styled.button({
   padding: '0.5rem',
 });
 
-export default function MenuDetail({ menu }) {
+export default function MenuDetail({
+  menu: {
+    description, englishName, imagePath, name, price,
+  },
+}) {
   return (
     <>
-      <MenuImage url={menu.imagePath} />
-      <MenuName>{menu.name}</MenuName>
-      <MenuEnglishName>{menu.englishName}</MenuEnglishName>
+      <MenuImage url={imagePath} />
+      <MenuName>{name}</MenuName>
+      <MenuEnglishName>{englishName}</MenuEnglishName>
       <hr />
       <MenuDescription>
-        {menu.description ? menu.description.split('\n').map((line) => (
+        {description ? description.split('\n').map((line) => (
           <span>
             {line}
             <br />
@@ -57,7 +61,7 @@ export default function MenuDetail({ menu }) {
         )) : null}
       </MenuDescription>
       <MenuPrice>
-        {menu.price ? menu.price.toLocaleString('ko-KR') : null}
+        {price ? price.toLocaleString('ko-KR') : null}
         원
       </MenuPrice>
       <OrderButton>주문하기</OrderButton>

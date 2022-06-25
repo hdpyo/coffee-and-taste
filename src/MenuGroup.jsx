@@ -15,18 +15,12 @@ const MenuGroupImage = styled.div(
     width: '200px',
     height: '200px',
   },
-  (props) => {
-    if (props.url) {
-      return ({
-        background: `url("https://coffee-and-taste.kro.kr${props.url}") center/100% no-repeat`,
-      });
-    }
-
-    return ({
-      border: '2px solid green',
-      backgroundColor: '#1E3932',
-    });
-  },
+  ({ url }) => (url ? ({
+    background: `url("https://coffee-and-taste.kro.kr${url}") center/100% no-repeat`,
+  }) : ({
+    border: '2px solid green',
+    backgroundColor: '#1E3932',
+  })),
 );
 
 const MenuGroupName = styled.div({
@@ -46,12 +40,12 @@ export default function MenuGroup({ menuGroups }) {
   return (
     <MenuGroupStyle>
       {
-        menuGroups.map((menuGroup) => (
-          <div key={menuGroup.id}>
-            <MenuGroupImage url={menuGroup.representativeImagePath} />
+        menuGroups.map(({ id, name, representativeImagePath }) => (
+          <div key={id}>
+            <MenuGroupImage url={representativeImagePath} />
             <MenuGroupName>
-              <Link to={`/menu-groups/${menuGroup.id}`}>
-                {menuGroup.name}
+              <Link to={`/menu-groups/${id}`}>
+                {name}
               </Link>
             </MenuGroupName>
           </div>

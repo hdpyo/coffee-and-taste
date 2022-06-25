@@ -6,14 +6,14 @@ const Menu = styled.div({
 });
 
 const MenuImage = styled.div(
-  {
+  ({ url }) => ({
     margin: '50px auto 20px auto',
     borderRadius: '50%',
     width: '200px',
     height: '200px',
-  },
-  (props) => ({
-    background: `url("https://coffee-and-taste.kro.kr${props.url}") center/100% no-repeat`,
+    ...(url && {
+      background: `url("https://coffee-and-taste.kro.kr${url}") center/100% no-repeat`,
+    }),
   }),
 );
 
@@ -50,12 +50,12 @@ export default function MenuList({ menus, menuGroupId }) {
   return (
     <>
       {
-        menus.map((menu) => (
-          <Menu key={menu.name}>
-            <MenuImage url={menu.imagePath} />
+        menus.map(({ id, imagePath, name }) => (
+          <Menu key={name}>
+            <MenuImage url={imagePath} />
             <MenuName>
-              <Link to={`/menu-groups/${menuGroupId}/menus/${menu.id}`}>
-                {menu.name}
+              <Link to={`/menu-groups/${menuGroupId}/menus/${id}`}>
+                {name}
               </Link>
             </MenuName>
           </Menu>
