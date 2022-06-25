@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 
-import { useState } from 'react';
-
 const CategoryContainerStyle = styled.div({
   margin: '0 auto',
   width: '40%',
@@ -36,18 +34,14 @@ const Category = styled.div(
 
 export default function CategoryContainer() {
   const categories = useSelector((state) => state.categories);
-
-  const [activeCategory, setActiveCategory] = useState(0);
+  const selectedCategory = useSelector((state) => state.selectedCategory);
 
   return (
     <CategoryContainerStyle>
       {
         categories.map(({ id, name }) => (
-          <Link
-            to={`/categories/${id}/menu-groups`}
-            onClick={() => setActiveCategory(id)}
-          >
-            <Category key={id} active={activeCategory === id}>
+          <Link to={`/categories/${id}/menu-groups`}>
+            <Category key={id} active={selectedCategory === id}>
               {name}
             </Category>
           </Link>

@@ -10,7 +10,7 @@ import {
   fetchCategories, fetchMenu, fetchMenuGroups, fetchMenus, postLogin,
 } from './services/api';
 
-const DEFAULT_CATEGORY_IS_BEVERAGE = 1;
+import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
 
 // - 초기 상태 값
 const initialState = {
@@ -18,7 +18,7 @@ const initialState = {
   menuGroups: [],
   menus: [],
   menu: {},
-  selectedCategory: DEFAULT_CATEGORY_IS_BEVERAGE,
+  selectedCategory: DEFAULT_SELECTED_CATEGORY_IS_NONE,
   loginFields: {
     email: '',
     password: '',

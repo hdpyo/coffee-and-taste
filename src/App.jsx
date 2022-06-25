@@ -13,7 +13,9 @@ import MenuListContainer from './MenuListContainer';
 import MenuDetailContainer from './MenuDetailContainer';
 import LoginPage from './LoginPage';
 
-import { loadCategories } from './store';
+import { loadCategories, selectCategory } from './store';
+
+import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
 
 import logo from './images/logo.png';
 
@@ -58,11 +60,15 @@ export default function App() {
     dispatch(loadCategories());
   }, []);
 
+  const resetSelectedCategory = () => {
+    dispatch(selectCategory(DEFAULT_SELECTED_CATEGORY_IS_NONE));
+  };
+
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header>
         <LogoContainer>
-          <Link to="/">
+          <Link to="/" onClick={resetSelectedCategory}>
             <Logo src={logo} alt="coffee-and-taste logo" />
           </Link>
         </LogoContainer>

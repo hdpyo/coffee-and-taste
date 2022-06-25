@@ -14,7 +14,7 @@ export default function MenuGroupContainer() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(selectCategory({ categoryId }));
+    dispatch(selectCategory(Number(categoryId)));
     dispatch(loadMenuGroups(categoryId));
   }, [categoryId]);
 
