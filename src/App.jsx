@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { useEffect } from 'react';
+
+import SignContainer from './SignContainer';
 import CategoryContainer from './CategoryContainer';
 import MenuGroupContainer from './MenuGroupContainer';
 import MenuListContainer from './MenuListContainer';
@@ -67,6 +69,7 @@ export default function App() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header>
+        <SignContainer />
         <LogoContainer>
           <Link to="/" onClick={resetSelectedCategory}>
             <Logo src={logo} alt="coffee-and-taste logo" />
