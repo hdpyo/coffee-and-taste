@@ -23,6 +23,23 @@ export async function fetchMenu(menuId) {
   return fetchData(`${BASE_URL}/menus/${menuId}`);
 }
 
+export async function postSignUp({
+  name, nickname, birthDate, email, password, phoneNumber,
+}) {
+  const url = `${BASE_URL}/members`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name, nickname, birthDate, email, password, phoneNumber,
+    }),
+  });
+  const { id } = await response.json();
+  return id;
+}
+
 export async function postLogin({ email, password }) {
   const url = `${BASE_URL}/auth/login`;
   const response = await fetch(url, {
