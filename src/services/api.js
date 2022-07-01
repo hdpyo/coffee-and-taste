@@ -66,3 +66,20 @@ export async function postLogin({ email, password }) {
   const { accessToken } = await response.json();
   return accessToken;
 }
+
+export async function postOrder({ accessToken, checkedCartItems }) {
+  const url = `${BASE_URL}/cart/order`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      cartMenuIds: checkedCartItems,
+    }),
+  });
+
+  const data = await response.json();
+  return data;
+}

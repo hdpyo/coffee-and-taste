@@ -8,7 +8,7 @@ import { logger } from 'redux-logger';
 
 import {
   fetchCart, fetchCategories, fetchMenu, fetchMenuGroups, fetchMenus,
-  postLogin, postSignUp,
+  postLogin, postOrder, postSignUp,
 } from './services/api';
 
 import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
@@ -34,6 +34,7 @@ const initialState = {
     birthDate: '',
   },
   cartMenus: [],
+  checkedCartItems: [],
 };
 
 // - 액션 생성 함수 정의
@@ -48,6 +49,9 @@ const LOGOUT = 'LOGOUT';
 const CLEAR_LOGIN_FIELDS = 'CLEAR_LOGIN_FIELDS';
 const UPDATE_SIGNUP_FIELDS = 'UPDATE_SIGNUP_FIELDS';
 const SET_CART_MENUS = 'SET_CART_MENUS';
+const ADD_CHECKED_CART_ITEM = 'ADD_CHECKED_CART_ITEM';
+const REMOVE_UNCHECKED_CART_ITEM = 'REMOVE_UNCHECKED_CART_ITEM';
+const CLEAR_CHECKED_CART_ITEMS = 'CLEAR_CHECKED_CART_ITEMS';
 
 export function updateLoginFields({ name, value }) {
   return {
@@ -197,6 +201,41 @@ export function loadCart() {
   };
 }
 
+export function addCheckedCartItem(checkedMenuId) {
+  return {
+    type: ADD_CHECKED_CART_ITEM,
+    payload: { checkedMenuId },
+  };
+}
+
+export function removeUncheckedCartItem(uncheckedMenuId) {
+  return {
+    type: REMOVE_UNCHECKED_CART_ITEM,
+    payload: { uncheckedMenuId },
+  };
+}
+
+export function clearCheckedCartItems() {
+  return {
+    type: CLEAR_CHECKED_CART_ITEMS,
+  };
+}
+
+export function requestOrder() {
+  return async (dispatch, getState) => {
+    const { accessToken, checkedCartItems } = getState();
+
+    try {
+      await postOrder({ accessToken, checkedCartItems });
+
+      dispatch(clearCheckedCartItems());
+      dispatch(loadCart());
+    } catch (e) {
+      // TODO : 에러 처리
+    }
+  };
+}
+
 // - 리듀서
 function reducer(state = initialState, action = {}) {
   if (action.type === UPDATE_LOGIN_FIELDS) {
@@ -286,6 +325,31 @@ function reducer(state = initialState, action = {}) {
     return {
       ...state,
       cartMenus: action.payload.cartMenus,
+    };
+  }
+
+  if (action.type === ADD_CHECKED_CART_ITEM) {
+    return {
+      ...state,
+      checkedCartItems: [
+        ...state.checkedCartItems, action.payload.checkedMenuId,
+      ],
+    };
+  }
+
+  if (action.type === REMOVE_UNCHECKED_CART_ITEM) {
+    return {
+      ...state,
+      checkedCartItems: [
+        ...state.checkedCartItems.filter((item) => item !== action.payload.uncheckedMenuId),
+      ],
+    };
+  }
+
+  if (action.type === CLEAR_CHECKED_CART_ITEMS) {
+    return {
+      ...state,
+      checkedCartItems: [],
     };
   }
 
