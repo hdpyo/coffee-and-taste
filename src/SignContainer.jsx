@@ -43,18 +43,25 @@ export default function SignContainer() {
         <Item>
           {
             accessToken ? (
-              <Link to="/logout" onClick={handleClickLogout}>Logout</Link>
-            ) : (
-              <Link to="/login">Login</Link>
-            )
-          }
-        </Item>
-        <Item>
-          {
-            accessToken ? (
               <h1>OOO 님</h1>
             ) : (
               <Link to="/signUp">SignUp</Link>
+            )
+          }
+        </Item>
+        {
+          accessToken ? (
+            <Item>
+              <Link to="/cart">Cart</Link>
+            </Item>
+          ) : null
+        }
+        <Item>
+          {
+            accessToken ? (
+              <Link to="/logout" onClick={handleClickLogout}>Logout</Link>
+            ) : (
+              <Link to="/login">Login</Link>
             )
           }
         </Item>

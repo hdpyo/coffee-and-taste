@@ -23,6 +23,20 @@ export async function fetchMenu(menuId) {
   return fetchData(`${BASE_URL}/menus/${menuId}`);
 }
 
+export async function fetchCart({ accessToken }) {
+  const url = `${BASE_URL}/cart/cart-menus`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const data = await response.json();
+  return data;
+}
+
 export async function postSignUp({
   name, nickname, birthDate, email, password, phoneNumber,
 }) {

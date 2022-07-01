@@ -15,6 +15,7 @@ import MenuListContainer from './MenuListContainer';
 import MenuDetailContainer from './MenuDetailContainer';
 import SignUpContainer from './SignUpContainer';
 import LoginPage from './LoginPage';
+import CartContainer from './CartContainer';
 
 import { loadCategories, selectCategory } from './store';
 
@@ -83,6 +84,7 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signUp" element={<SignUpContainer />} />
+            <Route path="/cart" element={<CartContainer />} />
             <Route path="/categories/:categoryId/menu-groups" element={<MenuGroupContainer />} />
             <Route path="/menu-groups/:menuGroupId" element={<MenuListContainer />} />
             <Route path="/menu-groups/:menuGroupId/menus/:menuId" element={<MenuDetailContainer />} />

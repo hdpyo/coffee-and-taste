@@ -7,7 +7,8 @@ import thunk from 'redux-thunk';
 import { logger } from 'redux-logger';
 
 import {
-  fetchCategories, fetchMenu, fetchMenuGroups, fetchMenus, postLogin, postSignUp,
+  fetchCart, fetchCategories, fetchMenu, fetchMenuGroups, fetchMenus,
+  postLogin, postSignUp,
 } from './services/api';
 
 import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
@@ -32,6 +33,7 @@ const initialState = {
     phoneNumber: '',
     birthDate: '',
   },
+  cartMenus: [],
 };
 
 // - 액션 생성 함수 정의
@@ -45,6 +47,7 @@ const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN';
 const LOGOUT = 'LOGOUT';
 const CLEAR_LOGIN_FIELDS = 'CLEAR_LOGIN_FIELDS';
 const UPDATE_SIGNUP_FIELDS = 'UPDATE_SIGNUP_FIELDS';
+const SET_CART_MENUS = 'SET_CART_MENUS';
 
 export function updateLoginFields({ name, value }) {
   return {
@@ -146,6 +149,13 @@ export function setMenu(menu) {
   };
 }
 
+export function setCartMenus(cartMenus) {
+  return {
+    type: SET_CART_MENUS,
+    payload: { cartMenus },
+  };
+}
+
 export function loadCategories() {
   return async (dispatch) => {
     const categories = await fetchCategories();
@@ -175,6 +185,15 @@ export function loadMenu(menuId) {
     const data = await fetchMenu((menuId));
 
     dispatch(setMenu(data));
+  };
+}
+
+export function loadCart() {
+  return async (dispatch, getState) => {
+    const { accessToken } = getState();
+    const data = await fetchCart({ accessToken });
+
+    dispatch(setCartMenus(data.cartMenus));
   };
 }
 
@@ -213,6 +232,7 @@ function reducer(state = initialState, action = {}) {
     return {
       ...state,
       accessToken: '',
+      loggedId: '',
     };
   }
 
@@ -259,6 +279,13 @@ function reducer(state = initialState, action = {}) {
     return {
       ...state,
       menu: action.payload.menu,
+    };
+  }
+
+  if (action.type === SET_CART_MENUS) {
+    return {
+      ...state,
+      cartMenus: action.payload.cartMenus,
     };
   }
 
