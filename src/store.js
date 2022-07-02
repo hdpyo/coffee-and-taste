@@ -11,6 +11,8 @@ import {
   postLogin, postOrder, postSignUp,
 } from './services/api';
 
+import { saveItem } from './services/localStorage';
+
 import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
 
 // - 초기 상태 값
@@ -110,6 +112,8 @@ export function requestLogin() {
 
     try {
       const accessToken = await postLogin({ email, password });
+
+      saveItem('accessToken', accessToken);
 
       dispatch(setAccessToken(accessToken));
     } catch (e) {
@@ -268,10 +272,10 @@ function reducer(state = initialState, action = {}) {
   }
 
   if (action.type === LOGOUT) {
+    saveItem('accessToken', '');
     return {
       ...state,
       accessToken: '',
-      loggedId: '',
     };
   }
 

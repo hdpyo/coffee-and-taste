@@ -17,9 +17,11 @@ import SignUpContainer from './SignUpContainer';
 import LoginPage from './LoginPage';
 import CartContainer from './CartContainer';
 
-import { loadCategories, selectCategory } from './store';
+import { loadCategories, selectCategory, setAccessToken } from './store';
 
 import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
+
+import { loadItem } from './services/localStorage';
 
 import logo from './images/logo.png';
 
@@ -59,6 +61,11 @@ const ContentContainer = styled.div({
 
 export default function App() {
   const dispatch = useDispatch();
+
+  const accessToken = loadItem('accessToken');
+  if (accessToken) {
+    dispatch(setAccessToken(accessToken));
+  }
 
   useEffect(() => {
     dispatch(loadCategories());
