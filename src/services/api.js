@@ -67,6 +67,23 @@ export async function postLogin({ email, password }) {
   return accessToken;
 }
 
+export async function postAddToCart({ accessToken, menuId, quantity }) {
+  const url = `${BASE_URL}/cart/cart-menus`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      menuId,
+      quantity,
+    }),
+  });
+
+  return response.status;
+}
+
 export async function postOrder({ accessToken, checkedCartItems }) {
   const url = `${BASE_URL}/cart/order`;
   const response = await fetch(url, {
@@ -82,4 +99,61 @@ export async function postOrder({ accessToken, checkedCartItems }) {
 
   const data = await response.json();
   return data;
+}
+
+export async function patchCartItemQuantity({ accessToken, menuId, quantity }) {
+  const url = `${BASE_URL}/cart/cart-menus/${menuId}`;
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ quantity }),
+  });
+
+  const data = await response.json();
+  return data;
+}
+
+export async function deleteCartItem({ accessToken, menuId }) {
+  const url = `${BASE_URL}/cart/cart-menus/${menuId}`;
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response.status;
+}
+
+export async function deleteSelectedCartItems({ accessToken, checkedCartItems }) {
+  const url = `${BASE_URL}/cart/cart-menus/`;
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      cartMenuIds: checkedCartItems,
+    }),
+  });
+
+  return response.status;
+}
+
+export async function deleteAllCartItems({ accessToken }) {
+  const url = `${BASE_URL}/cart/cart-menus/all`;
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response.status;
 }

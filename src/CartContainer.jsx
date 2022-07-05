@@ -2,18 +2,37 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useNavigate } from 'react-router-dom';
+
 import {
-  loadCart, addCheckedCartItem, removeUncheckedCartItem, requestOrder,
+  addCheckedCartItem,
+  cartMenuQuantityMinusOne,
+  cartMenuQuantityPlusOne,
+  clearCheckedCartItems,
+  loadCart,
+  removeUncheckedCartItem,
+  requestDeleteAllCartItems,
+  requestDeleteSelectedCartItem,
+  requestOrder,
+  requestRemoveCartItem,
+  requestUpdateCartItemQuantity,
 } from './store';
+
+import Cart from './Cart';
+
+import { CURRENT_PAGE_RELOAD } from './constants';
 
 export default function CartContainer() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const cartMenus = useSelector((state) => state.cartMenus);
+  const checkedCartItems = useSelector((state) => state.checkedCartItems);
 
   useEffect(() => {
     dispatch(loadCart());
+    dispatch(clearCheckedCartItems());
   }, []);
-
-  const cartMenus = useSelector((state) => state.cartMenus);
 
   const checkedItemHandler = (isChecked, checkedItemId) => {
     if (isChecked) {
@@ -23,60 +42,59 @@ export default function CartContainer() {
     }
   };
 
-  const handleChange = (event) => {
-    const { checked, value } = event.target;
+  const handleChange = ({ checked, value }) => {
     checkedItemHandler(checked, value);
+  };
+
+  const handleClickRemoveCartItem = (menuId) => {
+    if (window.confirm('메뉴를 삭제하시겠습니까?')) {
+      dispatch(requestRemoveCartItem(menuId));
+    }
   };
 
   const handleClickOrder = () => {
     dispatch(requestOrder());
   };
 
-  if (cartMenus.length === 0) {
-    return (
-      <div>
-        <h1>Cart</h1>
-        <hr />
-        <div>장바구니에 담긴 메뉴가 없습니다!</div>
-      </div>
-    );
-  }
+  const handleClickQuantityPlusOne = (menuId) => {
+    dispatch(cartMenuQuantityPlusOne(menuId));
+  };
+
+  const handleClickQuantityMinusOne = (menuId) => {
+    dispatch(cartMenuQuantityMinusOne(menuId));
+  };
+
+  const handleClickUpdateItemQuantity = (menuId) => {
+    dispatch(requestUpdateCartItemQuantity(menuId))
+      .then(() => {
+        navigate(CURRENT_PAGE_RELOAD);
+      });
+  };
+
+  const handleClickDeleteSelectedCartItems = () => {
+    if (window.confirm('선택한 메뉴를 삭제하시겠습니까?')) {
+      dispatch(requestDeleteSelectedCartItem());
+    }
+  };
+
+  const handleClickDeleteAllCartItems = () => {
+    if (window.confirm('전체 메뉴를 삭제하시겠습니까?')) {
+      dispatch(requestDeleteAllCartItems());
+    }
+  };
 
   return (
-    <div>
-      <h1>Cart</h1>
-      <hr />
-      <button type="button" onClick={handleClickOrder}>주문하기</button>
-      {
-        cartMenus.map(({
-          id,
-          menu: {
-            name, englishName, price, imagePath,
-          },
-          quantity,
-        }) => (
-          <div>
-            <input type="checkbox" name="menuId" value={id} onChange={handleChange} />
-            <span>
-              메뉴 이름 :
-              {name}
-            </span>
-            <span>
-              영어 이름 :
-              {englishName}
-            </span>
-            <span>
-              가격 :
-              {price}
-            </span>
-            <span>
-              수량 :
-              {quantity}
-            </span>
-            <img src={`https://coffee-and-taste.kro.kr${imagePath}`} alt={name} />
-          </div>
-        ))
-      }
-    </div>
+    <Cart
+      cartMenus={cartMenus}
+      checkedCartItems={checkedCartItems}
+      removeSelectedCartItems={handleClickDeleteSelectedCartItems}
+      removeAllCartItems={handleClickDeleteAllCartItems}
+      onChange={handleChange}
+      onClick={handleClickOrder}
+      removeCartItem={handleClickRemoveCartItem}
+      increaseQuantityOne={handleClickQuantityPlusOne}
+      decreaseQuantityOne={handleClickQuantityMinusOne}
+      updateItemQuantity={handleClickUpdateItemQuantity}
+    />
   );
 }

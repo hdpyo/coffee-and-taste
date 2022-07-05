@@ -1,4 +1,15 @@
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useEffect } from 'react';
+
 import styled from '@emotion/styled';
+
+import { BsFillDashCircleFill, BsPlusCircleFill } from 'react-icons/bs';
+
+import { useNavigate } from 'react-router-dom';
+import {
+  initializeMenuQuantity, menuQuantityMinusOne, menuQuantityPlusOne, requestAddToCart,
+} from './store';
 
 const MenuImage = styled.div(
   ({ url }) => ({
@@ -41,11 +52,53 @@ const OrderButton = styled.button({
   padding: '0.5rem',
 });
 
+const CartButton = styled.button({
+  fontSize: '1.1rem',
+  borderRadius: '10%',
+  color: 'white',
+  backgroundColor: '#006633',
+  padding: '0.5rem',
+});
+
+const MenuQuantity = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const Quantity = styled.span({
+  fontSize: '1.5rem',
+  padding: '0.5rem 1rem',
+});
+
 export default function MenuDetail({
   menu: {
     description, englishName, imagePath, name, price,
   },
 }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const menuQuantity = useSelector((state) => state.menuQuantity);
+
+  useEffect(() => {
+    dispatch(initializeMenuQuantity());
+  }, []);
+
+  const handleClickAddToCart = () => {
+    dispatch(requestAddToCart())
+      .then(
+        () => navigate('/cart'),
+      );
+  };
+
+  const handleClickPlusOne = () => {
+    dispatch(menuQuantityPlusOne());
+  };
+
+  const handleClickMinusOne = () => {
+    dispatch(menuQuantityMinusOne());
+  };
+
   return (
     <>
       <MenuImage url={imagePath} />
@@ -64,7 +117,13 @@ export default function MenuDetail({
         {price ? price.toLocaleString('ko-KR') : null}
         원
       </MenuPrice>
+      <MenuQuantity>
+        <BsFillDashCircleFill size="30" onClick={handleClickMinusOne} />
+        <Quantity>{menuQuantity}</Quantity>
+        <BsPlusCircleFill size="30" onClick={handleClickPlusOne} />
+      </MenuQuantity>
       <OrderButton>주문하기</OrderButton>
+      <CartButton onClick={handleClickAddToCart}>장바구니에 담기</CartButton>
     </>
   );
 }

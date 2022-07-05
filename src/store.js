@@ -7,8 +7,19 @@ import thunk from 'redux-thunk';
 import { logger } from 'redux-logger';
 
 import {
-  fetchCart, fetchCategories, fetchMenu, fetchMenuGroups, fetchMenus,
-  postLogin, postOrder, postSignUp,
+  deleteAllCartItems,
+  deleteCartItem,
+  deleteSelectedCartItems,
+  fetchCart,
+  fetchCategories,
+  fetchMenu,
+  fetchMenuGroups,
+  fetchMenus,
+  patchCartItemQuantity,
+  postAddToCart,
+  postLogin,
+  postOrder,
+  postSignUp,
 } from './services/api';
 
 import { saveItem } from './services/localStorage';
@@ -21,6 +32,7 @@ const initialState = {
   menuGroups: [],
   menus: [],
   menu: {},
+  menuQuantity: 1,
   selectedCategory: DEFAULT_SELECTED_CATEGORY_IS_NONE,
   loginFields: {
     email: '',
@@ -54,6 +66,11 @@ const SET_CART_MENUS = 'SET_CART_MENUS';
 const ADD_CHECKED_CART_ITEM = 'ADD_CHECKED_CART_ITEM';
 const REMOVE_UNCHECKED_CART_ITEM = 'REMOVE_UNCHECKED_CART_ITEM';
 const CLEAR_CHECKED_CART_ITEMS = 'CLEAR_CHECKED_CART_ITEMS';
+const MENU_QUANTITY_PLUS_ONE = 'MENU_QUANTITY_PLUS_ONE';
+const MENU_QUANTITY_MINUS_ONE = 'MENU_QUANTITY_MINUS_ONE';
+const INITIALIZE_MENU_QUANTITY = 'INITIALIZE_MENU_QUANTITY';
+const CART_MENU_QUANTITY_PLUS_ONE = 'CART_MENU_QUANTITY_PLUS_ONE';
+const CART_MENU_QUANTITY_MINUS_ONE = 'CART_MENU_QUANTITY_MINUS_ONE';
 
 export function updateLoginFields({ name, value }) {
   return {
@@ -240,6 +257,122 @@ export function requestOrder() {
   };
 }
 
+export function menuQuantityPlusOne() {
+  return {
+    type: MENU_QUANTITY_PLUS_ONE,
+  };
+}
+
+export function menuQuantityMinusOne() {
+  return {
+    type: MENU_QUANTITY_MINUS_ONE,
+  };
+}
+
+export function initializeMenuQuantity() {
+  return {
+    type: INITIALIZE_MENU_QUANTITY,
+  };
+}
+
+export function requestAddToCart() {
+  return async (dispatch, getState) => {
+    const { accessToken, menu: { id: menuId }, menuQuantity } = getState();
+
+    try {
+      const responseStatus = await postAddToCart({ accessToken, menuId, quantity: menuQuantity });
+
+      if (responseStatus === 201) {
+        alert('메뉴를 장바구니에 담았습니다.');
+      }
+    } catch (err) {
+      // TODO : 에러 처리
+    }
+  };
+}
+
+export function cartMenuQuantityPlusOne(menuId) {
+  return {
+    type: CART_MENU_QUANTITY_PLUS_ONE,
+    payload: { menuId },
+  };
+}
+
+export function cartMenuQuantityMinusOne(menuId) {
+  return {
+    type: CART_MENU_QUANTITY_MINUS_ONE,
+    payload: { menuId },
+  };
+}
+
+export function requestUpdateCartItemQuantity(menuId) {
+  return async (dispatch, getState) => {
+    const { accessToken, cartMenus } = getState();
+
+    const { quantity } = cartMenus.find((item) => item.id === menuId);
+
+    try {
+      const data = await patchCartItemQuantity({ accessToken, menuId, quantity });
+      if (data) {
+        alert('수량을 변경하였습니다.');
+      }
+    } catch (err) {
+      // TODO : 에러 처리
+    }
+  };
+}
+
+export function requestRemoveCartItem(menuId) {
+  return async (dispatch, getState) => {
+    const { accessToken } = getState();
+
+    try {
+      const responseStatus = await deleteCartItem({ accessToken, menuId });
+
+      if (responseStatus === 204) {
+        alert('메뉴를 삭제했습니다.');
+        dispatch(loadCart());
+      }
+    } catch (err) {
+      // TODO : 에러 처리
+    }
+  };
+}
+
+export function requestDeleteSelectedCartItem() {
+  return async (dispatch, getState) => {
+    const { accessToken, checkedCartItems } = getState();
+
+    try {
+      const responseStatus = await deleteSelectedCartItems({ accessToken, checkedCartItems });
+
+      if (responseStatus === 204) {
+        alert('선택한 메뉴를 삭제했습니다.');
+        dispatch(loadCart());
+      }
+    } catch (err) {
+      // TODO : 에러 처리
+    }
+  };
+}
+
+export function requestDeleteAllCartItems() {
+  return async (dispatch, getState) => {
+    const { accessToken } = getState();
+
+    try {
+      const responseStatus = await deleteAllCartItems({ accessToken });
+
+      if (responseStatus === 204) {
+        alert('전체 메뉴를 삭제했습니다.');
+        dispatch(loadCart());
+      }
+    } catch (err) {
+      // TODO : 에러 처리
+    }
+  };
+}
+
 // - 리듀서
 function reducer(state = initialState, action = {}) {
   if (action.type === UPDATE_LOGIN_FIELDS) {
@@ -354,6 +487,57 @@ function reducer(state = initialState, action = {}) {
     return {
       ...state,
       checkedCartItems: [],
+    };
+  }
+
+  if (action.type === MENU_QUANTITY_PLUS_ONE) {
+    return {
+      ...state,
+      menuQuantity: state.menuQuantity + 1,
+    };
+  }
+
+  if (action.type === MENU_QUANTITY_MINUS_ONE) {
+    return {
+      ...state,
+      menuQuantity: state.menuQuantity - 1,
+    };
+  }
+
+  if (action.type === INITIALIZE_MENU_QUANTITY) {
+    return {
+      ...state,
+      menuQuantity: 1,
+    };
+  }
+
+  if (action.type === CART_MENU_QUANTITY_PLUS_ONE) {
+    const { menuId } = action.payload;
+    return {
+      ...state,
+      cartMenus: state.cartMenus.map((menu) => {
+        if (menu.id === menuId) {
+          return ({ ...menu, quantity: menu.quantity + 1 });
+        }
+        return menu;
+      }),
+    };
+  }
+
+  if (action.type === CART_MENU_QUANTITY_MINUS_ONE) {
+    const { menuId } = action.payload;
+    return {
+      ...state,
+      cartMenus: state.cartMenus.map((menu) => {
+        if (menu.id === menuId) {
+          if ((menu.quantity - 1) < 1) {
+            alert('수량은 1보다 작을 수 없습니다.');
+            return menu;
+          }
+          return ({ ...menu, quantity: menu.quantity - 1 });
+        }
+        return menu;
+      }),
     };
   }
 

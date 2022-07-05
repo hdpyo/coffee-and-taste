@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
+import { TiShoppingCart } from 'react-icons/ti';
 import { clearLoginFields, logout } from './store';
 
 const List = styled.ul({
@@ -22,6 +23,9 @@ const Item = styled.li({
   '& a': {
     color: '#555555',
     textDecoration: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    lineHeight: '1.5rem',
   },
 });
 
@@ -52,7 +56,10 @@ export default function SignContainer() {
         {
           accessToken ? (
             <Item>
-              <Link to="/cart">Cart</Link>
+              <Link to="/cart">
+                Cart
+                <TiShoppingCart size="1.5rem" />
+              </Link>
             </Item>
           ) : null
         }
