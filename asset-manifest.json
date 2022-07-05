@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/coffee-and-taste/static/js/main.51ff4abf.js",
+    "main.js": "/coffee-and-taste/static/js/main.3586cdec.js",
     "static/js/787.2d279e3d.chunk.js": "/coffee-and-taste/static/js/787.2d279e3d.chunk.js",
     "index.html": "/coffee-and-taste/index.html",
-    "main.51ff4abf.js.map": "/coffee-and-taste/static/js/main.51ff4abf.js.map",
+    "main.3586cdec.js.map": "/coffee-and-taste/static/js/main.3586cdec.js.map",
     "787.2d279e3d.chunk.js.map": "/coffee-and-taste/static/js/787.2d279e3d.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.51ff4abf.js"
+    "static/js/main.3586cdec.js"
   ]
 }
