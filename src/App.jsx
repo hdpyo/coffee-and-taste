@@ -30,7 +30,7 @@ const Container = styled.div({
 
 const Header = styled.header({
   width: '100%',
-  background: 'beige 100%',
+  background: '#F6F5EF 100%',
 });
 
 const LogoContainer = styled.div({

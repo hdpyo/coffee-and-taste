@@ -21,6 +21,9 @@ const RemoveSelectedItemsButton = styled.button({
   color: '#006633',
   fontSize: '16px',
   cursor: 'pointer',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 });
 
 const RemoveAllItemButton = styled.button({
@@ -29,6 +32,9 @@ const RemoveAllItemButton = styled.button({
   padding: '10px 15px',
   fontSize: '16px',
   cursor: 'pointer',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
 });
 
 const ItemContainer = styled.div({
@@ -143,14 +149,20 @@ const ItemQuantityLi = styled.li(
     '& button': {
       width: '5rem',
       height: '2rem',
-      color: 'white',
-      borderRadius: '30px',
-      backgroundColor: '#006633',
-      outline: 'none',
-      border: 'none',
-      cursor: 'pointer',
+      color: '#00704a',
       fontSize: '1rem',
       lineHeight: '1.5rem',
+      background: 'transparent',
+      border: '2px solid #00704a',
+      borderRadius: '30px',
+      outline: 'none',
+      cursor: 'pointer',
+      transition: 'background-color .7s, color .7s',
+      '&:hover': {
+        color: '#fff',
+        backgroundColor: '#00704a',
+        textDecoration: 'underline',
+      },
     },
   }),
 );
@@ -185,15 +197,21 @@ const OrderDiv = styled.div({
 });
 
 const OrderButton = styled.button({
-  width: '70%',
+  width: '30%',
   height: '3rem',
+  color: '#00704a',
   fontSize: '1.3rem',
-  color: 'white',
   borderRadius: '30px',
-  backgroundColor: '#006633',
+  background: 'transparent',
+  border: '2px solid #00704a',
   outline: 'none',
-  border: 'none',
   cursor: 'pointer',
+  transition: 'background-color .7s, color .7s',
+  '&:hover': {
+    color: '#fff',
+    backgroundColor: '#00704a',
+    textDecoration: 'underline',
+  },
 });
 
 export default function Cart({

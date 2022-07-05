@@ -11,25 +11,31 @@ import {
   initializeMenuQuantity, menuQuantityMinusOne, menuQuantityPlusOne, requestAddToCart,
 } from './store';
 
-const MenuImage = styled.div(
-  ({ url }) => ({
-    margin: '30px auto',
-    borderRadius: '50%',
-    width: '200px',
-    height: '200px',
-    ...(url && {
-      background: `url("https://coffee-and-taste.kro.kr${url}") center/100% no-repeat`,
-    }),
-  }),
-);
+const MenuImage = styled.div({
+  width: '250px',
+  height: '250px',
+  margin: '30px auto',
+  overflow: 'hidden',
+  borderRadius: '50%',
+  '& img': {
+    width: '100%',
+    height: '100%',
+    transition: '1s',
+    '&:hover': {
+      transform: 'scale(1.2, 1.2)',
+    },
+  },
+});
 
 const MenuName = styled.h1({
+  textAlign: 'center',
   fontSize: '1.7rem',
   fontWeight: '500',
   paddingBottom: '.5rem',
 });
 
 const MenuEnglishName = styled.h2({
+  textAlign: 'center',
   fontSize: '1.3rem',
   color: 'rgba(179, 179, 179)',
   paddingBottom: '.5rem',
@@ -40,27 +46,29 @@ const MenuDescription = styled.p({
   fontSize: '1.2rem',
   paddingTop: '.5rem',
   lineHeight: '1.6rem',
+  '& span': {
+    wordBreak: 'keep-all',
+  },
 });
 
 const MenuPrice = styled.h3({
+  textAlign: 'right',
   margin: '10px 0',
-  fontSize: '1.7rem',
+  fontSize: '2rem',
   fontWeight: '500',
   padding: '1rem 0',
 });
 
 const MenuQuantity = styled.div({
   display: 'flex',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
   alignItems: 'center',
-  '& *': {
-    marginRight: '20px',
-  },
 });
 
 const Quantity = styled.span({
   fontSize: '2rem',
-  padding: '0.5rem 1rem',
+  padding: '0.5rem 2rem',
+  margin: '0 1rem',
 });
 
 const ButtonDiv = styled.div({
@@ -70,29 +78,39 @@ const ButtonDiv = styled.div({
 });
 
 const OrderButton = styled.button({
-  padding: '0.5rem',
   width: '30%',
   height: '3rem',
+  padding: '0.5rem',
   fontSize: '1.5rem',
-  color: 'white',
-  borderRadius: '30px',
-  backgroundColor: '#006633',
-  outline: 'none',
-  border: 'none',
+  color: '#00704a',
+  background: 'transparent',
+  border: '2px solid #00704a',
+  borderRadius: '5px',
   cursor: 'pointer',
+  transition: 'background-color .7s, color .7s',
+  '&:hover': {
+    color: '#fff',
+    backgroundColor: '#00704a',
+    textDecoration: 'underline',
+  },
 });
 
 const CartButton = styled.button({
-  padding: '0.5rem',
   width: '30%',
   height: '3rem',
+  padding: '0.5rem',
   fontSize: '1.5rem',
-  color: 'white',
-  borderRadius: '30px',
-  backgroundColor: '#006633',
-  outline: 'none',
-  border: 'none',
+  color: '#00704a',
+  background: 'transparent',
+  border: '2px solid #00704a',
+  borderRadius: '5px',
   cursor: 'pointer',
+  transition: 'background-color .7s, color .7s',
+  '&:hover': {
+    color: '#fff',
+    backgroundColor: '#00704a',
+    textDecoration: 'underline',
+  },
 });
 
 export default function MenuDetail({
@@ -126,7 +144,9 @@ export default function MenuDetail({
 
   return (
     <>
-      <MenuImage url={imagePath} />
+      <MenuImage>
+        <img src={`https://coffee-and-taste.kro.kr${imagePath}`} alt={name} />
+      </MenuImage>
       <MenuName>{name}</MenuName>
       <MenuEnglishName>{englishName}</MenuEnglishName>
       <hr />

@@ -5,31 +5,28 @@ const Menu = styled.div({
 
 });
 
-const MenuImage = styled.div(
-  ({ url }) => ({
-    margin: '50px auto 20px auto',
-    borderRadius: '50%',
-    width: '200px',
-    height: '200px',
-    ...(url && {
-      background: `url("https://coffee-and-taste.kro.kr${url}") center/100% no-repeat`,
-    }),
-  }),
-);
+const MenuImage = styled.div({
+  width: '200px',
+  height: '200px',
+  margin: '50px auto 20px auto',
+  overflow: 'hidden',
+  borderRadius: '50%',
+  '& img': {
+    width: '100%',
+    height: '100%',
+    transition: '1s',
+    '&:hover': {
+      transform: 'scale(1.2, 1.2)',
+    },
+  },
+});
 
 const MenuName = styled.div({
   margin: '10px 0',
-  fontSize: '16px',
+  fontSize: '1.1rem',
+  color: '#555555',
   textAlign: 'center',
   wordBreak: 'keep-all',
-  '& a': {
-    fontSize: '1.1rem',
-    color: '#555555',
-    textDecoration: 'none',
-    '&:hover': {
-      color: '#000',
-    },
-  },
 });
 
 const NoMenu = styled.h1({
@@ -52,11 +49,13 @@ export default function MenuList({ menus, menuGroupId, selectedCategory }) {
       {
         menus.map(({ id, imagePath, name }) => (
           <Menu key={name}>
-            <MenuImage url={imagePath} />
-            <MenuName>
+            <MenuImage>
               <Link to={`/menu-groups/${menuGroupId}/menus/${id}`} state={{ categoryId: selectedCategory }}>
-                {name}
+                <img src={`https://coffee-and-taste.kro.kr${imagePath}`} alt={name} />
               </Link>
+            </MenuImage>
+            <MenuName>
+              {name}
             </MenuName>
           </Menu>
         ))

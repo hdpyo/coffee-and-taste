@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { TiShoppingCart } from 'react-icons/ti';
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogIn, FiLogOut, FiUserPlus } from 'react-icons/fi';
 
 import { clearLoginFields, logout } from './store';
 
@@ -40,6 +40,7 @@ const Item = styled.li({
     justifyContent: 'center',
     alignItems: 'center',
     lineHeight: '1.5rem',
+    transition: 'border-bottom .08s',
     '&:hover': {
       color: '#000',
       fontWeight: '700',
@@ -69,9 +70,14 @@ export default function SignContainer() {
         <Item>
           {
             accessToken ? (
-              <Link to="/myPage">OOO 님</Link>
+              <Link to="/myPage">
+                OOO 님
+              </Link>
             ) : (
-              <Link to="/signUp">SignUp</Link>
+              <Link to="/signUp">
+                Sign Up
+                <FiUserPlus size="1.5rem" />
+              </Link>
             )
           }
         </Item>
@@ -93,7 +99,10 @@ export default function SignContainer() {
                 <FiLogOut size="1.5rem" />
               </Link>
             ) : (
-              <Link to="/login">Login</Link>
+              <Link to="/login">
+                Login
+                <FiLogIn size="1.5rem" />
+              </Link>
             )
           }
         </Item>
