@@ -8,7 +8,8 @@ import { loadMenu } from './store';
 import MenuDetail from './MenuDetail';
 
 const MenuDetailStyle = styled.div({
-  paddingTop: '1rem',
+  width: '700px',
+  margin: '0 auto',
 });
 
 export default function MenuDetailContainer() {
