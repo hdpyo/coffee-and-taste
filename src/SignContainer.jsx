@@ -5,12 +5,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { TiShoppingCart } from 'react-icons/ti';
+import { FiLogOut } from 'react-icons/fi';
+
 import { clearLoginFields, logout } from './store';
+
+const SignContainerStyle = styled.div({
+
+});
 
 const List = styled.ul({
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'center',
+  margin: '0 auto',
+  width: '95%',
+  height: '3rem',
 });
 
 const Item = styled.li({
@@ -19,13 +28,26 @@ const Item = styled.li({
   alignItems: 'center',
   lineHeight: '3rem',
   minWidth: '6rem',
-  margin: '0 0.5rem',
+  padding: '0 .5rem',
+  borderLeft: '3px solid #321414',
+  '&:first-child': {
+    borderLeft: 'none',
+  },
   '& a': {
     color: '#555555',
     textDecoration: 'none',
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
     lineHeight: '1.5rem',
+    '&:hover': {
+      color: '#000',
+      fontWeight: '700',
+      borderBottom: '3px solid green',
+    },
+    '& svg': {
+      marginLeft: '0.3rem',
+    },
   },
 });
 
@@ -42,12 +64,12 @@ export default function SignContainer() {
   };
 
   return (
-    <div>
+    <SignContainerStyle>
       <List>
         <Item>
           {
             accessToken ? (
-              <h1>OOO 님</h1>
+              <Link to="/myPage">OOO 님</Link>
             ) : (
               <Link to="/signUp">SignUp</Link>
             )
@@ -66,13 +88,16 @@ export default function SignContainer() {
         <Item>
           {
             accessToken ? (
-              <Link to="/logout" onClick={handleClickLogout}>Logout</Link>
+              <Link to="/logout" onClick={handleClickLogout}>
+                Logout
+                <FiLogOut size="1.5rem" />
+              </Link>
             ) : (
               <Link to="/login">Login</Link>
             )
           }
         </Item>
       </List>
-    </div>
+    </SignContainerStyle>
   );
 }

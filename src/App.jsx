@@ -34,21 +34,14 @@ const Header = styled.header({
 });
 
 const LogoContainer = styled.div({
-  margin: '0 auto',
-  width: '75%',
-  '& a': {
-    fontSize: '1.8rem',
-    color: '#555555',
-    textDecoration: 'none',
-  },
+  margin: '-50px 0 0 0',
   padding: '1rem 0',
   textAlign: 'center',
 });
 
 const Logo = styled.img({
-  margin: '0 auto',
-  width: '100px',
-  height: '100px',
+  width: '150px',
+  height: '150px',
   borderRadius: '50%',
 });
 
