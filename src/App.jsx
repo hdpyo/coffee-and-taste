@@ -17,9 +17,7 @@ import SignUpContainer from './SignUpContainer';
 import LoginPage from './LoginPage';
 import CartContainer from './CartContainer';
 
-import { loadCategories, selectCategory, setAccessToken } from './store';
-
-import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
+import { loadCategories, setAccessToken } from './store';
 
 import { loadItem } from './services/localStorage';
 
@@ -71,16 +69,12 @@ export default function App() {
     dispatch(loadCategories());
   }, []);
 
-  const resetSelectedCategory = () => {
-    dispatch(selectCategory(DEFAULT_SELECTED_CATEGORY_IS_NONE));
-  };
-
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header>
         <SignContainer />
         <LogoContainer>
-          <Link to="/" onClick={resetSelectedCategory}>
+          <Link to="/">
             <Logo src={logo} alt="coffee-and-taste logo" />
           </Link>
         </LogoContainer>

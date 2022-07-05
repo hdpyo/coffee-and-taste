@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { useSelector } from 'react-redux';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const CategoryContainerStyle = styled.div({
   margin: '0 auto',
@@ -16,7 +16,7 @@ const CategoryContainerStyle = styled.div({
     textDecoration: 'none',
     '&:hover': {
       color: '#000',
-      borderBottom: '2px solid green',
+      borderBottom: '4px solid green',
     },
   },
 });
@@ -26,25 +26,32 @@ const Category = styled.div(
     padding: '20px 0',
     fontSize: '1.8rem',
     fontWeight: 'bold',
-    ...(active && {
-      borderBottom: '4px solid green',
-    }),
+    '& a': {
+      ...(active && {
+        borderBottom: '4px solid green',
+      }),
+    },
   }),
 );
 
 export default function CategoryContainer() {
   const categories = useSelector((state) => state.categories);
-  const selectedCategory = useSelector((state) => state.selectedCategory);
+
+  const location = useLocation();
+  if (!location.state) {
+    location.state = '';
+  }
+  const selectedCategory = location.state.categoryId;
 
   return (
     <CategoryContainerStyle>
       {
         categories.map(({ id, name }) => (
-          <Link to={`/categories/${id}/menu-groups`}>
-            <Category key={id} active={selectedCategory === id}>
+          <Category key={id} active={selectedCategory === id}>
+            <Link to={`/categories/${id}/menu-groups`} state={{ categoryId: id }}>
               {name}
-            </Category>
-          </Link>
+            </Link>
+          </Category>
         ))
       }
     </CategoryContainerStyle>

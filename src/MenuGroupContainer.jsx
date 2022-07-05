@@ -1,10 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useEffect } from 'react';
 
-import { loadMenuGroups, selectCategory } from './store';
+import { loadMenuGroups } from './store';
 
 import MenuGroup from './MenuGroup';
 
@@ -13,14 +13,15 @@ export default function MenuGroupContainer() {
 
   const dispatch = useDispatch();
 
+  const selectedCategory = useLocation().state.categoryId;
+
   useEffect(() => {
-    dispatch(selectCategory(Number(categoryId)));
     dispatch(loadMenuGroups(categoryId));
   }, [categoryId]);
 
   const menuGroups = useSelector((state) => state.menuGroups);
 
   return (
-    <MenuGroup menuGroups={menuGroups} />
+    <MenuGroup menuGroups={menuGroups} selectedCategory={selectedCategory} />
   );
 }

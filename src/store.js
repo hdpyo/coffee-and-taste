@@ -24,8 +24,6 @@ import {
 
 import { saveItem } from './services/localStorage';
 
-import { DEFAULT_SELECTED_CATEGORY_IS_NONE } from './constants';
-
 // - 초기 상태 값
 const initialState = {
   categories: [],
@@ -33,7 +31,6 @@ const initialState = {
   menus: [],
   menu: {},
   menuQuantity: 1,
-  selectedCategory: DEFAULT_SELECTED_CATEGORY_IS_NONE,
   loginFields: {
     email: '',
     password: '',
@@ -52,7 +49,6 @@ const initialState = {
 };
 
 // - 액션 생성 함수 정의
-const SELECT_CATEGORY = 'SELECT_CATEGORY';
 const SET_CATEGORIES = 'SET_CATEGORIES';
 const SET_MENU_GROUPS = 'SET_MENU_GROUPS';
 const SET_MENUS = 'SET_MENUS';
@@ -136,13 +132,6 @@ export function requestLogin() {
     } catch (e) {
       // TODO : 에러 처리
     }
-  };
-}
-
-export function selectCategory(categoryId) {
-  return {
-    type: SELECT_CATEGORY,
-    payload: { categoryId },
   };
 }
 
@@ -420,13 +409,6 @@ function reducer(state = initialState, action = {}) {
         email: '',
         password: '',
       },
-    };
-  }
-
-  if (action.type === SELECT_CATEGORY) {
-    return {
-      ...state,
-      selectedCategory: action.payload.categoryId,
     };
   }
 

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { useEffect } from 'react';
 
@@ -22,6 +22,8 @@ export default function MenuListContainer() {
 
   const dispatch = useDispatch();
 
+  const selectedCategory = useLocation().state.categoryId;
+
   useEffect(() => {
     dispatch(loadMenuList(menuGroupId));
   }, [menuGroupId]);
@@ -30,7 +32,7 @@ export default function MenuListContainer() {
 
   return (
     <MenuContainerStyle>
-      <MenuList menus={menus} menuGroupId={menuGroupId} />
+      <MenuList menus={menus} menuGroupId={menuGroupId} selectedCategory={selectedCategory} />
     </MenuContainerStyle>
   );
 }

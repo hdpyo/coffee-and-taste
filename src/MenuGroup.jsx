@@ -36,7 +36,7 @@ const MenuGroupName = styled.div({
   },
 });
 
-export default function MenuGroup({ menuGroups }) {
+export default function MenuGroup({ menuGroups, selectedCategory }) {
   return (
     <MenuGroupStyle>
       {
@@ -44,7 +44,7 @@ export default function MenuGroup({ menuGroups }) {
           <div key={id}>
             <MenuGroupImage url={representativeImagePath} />
             <MenuGroupName>
-              <Link to={`/menu-groups/${id}`}>
+              <Link to={`/menu-groups/${id}`} state={{ categoryId: selectedCategory }}>
                 {name}
               </Link>
             </MenuGroupName>
