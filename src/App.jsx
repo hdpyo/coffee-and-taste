@@ -79,9 +79,9 @@ export default function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signUp" element={<SignUpContainer />} />
             <Route path="/cart" element={<CartContainer />} />
-            <Route path="/categories/:categoryId/menu-groups" element={<MenuGroupContainer />} />
+            <Route path="/categories/:categoryId" element={<MenuGroupContainer />} />
             <Route path="/menu-groups/:menuGroupId" element={<MenuListContainer />} />
-            <Route path="/menu-groups/:menuGroupId/menus/:menuId" element={<MenuDetailContainer />} />
+            <Route path="/menus/:menuId" element={<MenuDetailContainer />} />
           </Routes>
         </ContentContainer>
       </Container>

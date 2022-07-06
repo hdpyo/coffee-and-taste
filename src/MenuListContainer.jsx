@@ -32,7 +32,7 @@ export default function MenuListContainer() {
 
   return (
     <MenuContainerStyle>
-      <MenuList menus={menus} menuGroupId={menuGroupId} selectedCategory={selectedCategory} />
+      <MenuList menus={menus} selectedCategory={selectedCategory} />
     </MenuContainerStyle>
   );
 }

@@ -35,7 +35,7 @@ const NoMenu = styled.h1({
   fontSize: '2rem',
 });
 
-export default function MenuList({ menus, menuGroupId, selectedCategory }) {
+export default function MenuList({ menus, selectedCategory }) {
   if (menus === undefined) {
     return (
       <MenuList>
@@ -50,7 +50,7 @@ export default function MenuList({ menus, menuGroupId, selectedCategory }) {
         menus.map(({ id, imagePath, name }) => (
           <Menu key={name}>
             <MenuImage>
-              <Link to={`/menu-groups/${menuGroupId}/menus/${id}`} state={{ categoryId: selectedCategory }}>
+              <Link to={`/menus/${id}`} state={{ categoryId: selectedCategory }}>
                 <img src={`https://coffee-and-taste.kro.kr${imagePath}`} alt={name} />
               </Link>
             </MenuImage>

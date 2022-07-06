@@ -53,7 +53,7 @@ export default function CategoryContainer() {
       {
         categories.map(({ id, name }) => (
           <Category key={id} active={selectedCategory === id}>
-            <Link to={`/categories/${id}/menu-groups`} state={{ categoryId: id }}>
+            <Link to={`/categories/${id}`} state={{ categoryId: id }}>
               {name}
             </Link>
           </Category>
