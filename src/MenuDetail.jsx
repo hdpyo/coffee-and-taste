@@ -1,15 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
-
-import { useEffect } from 'react';
-
 import styled from '@emotion/styled';
 
 import { BsFillDashCircleFill, BsPlusCircleFill } from 'react-icons/bs';
-
-import { useNavigate } from 'react-router-dom';
-import {
-  initializeMenuQuantity, menuQuantityMinusOne, menuQuantityPlusOne, requestAddToCart,
-} from './store';
 
 const MenuImage = styled.div({
   width: '250px',
@@ -59,11 +50,22 @@ const MenuPrice = styled.h3({
   padding: '1rem 0',
 });
 
-const MenuQuantity = styled.div({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-});
+const MenuQuantity = styled.div(
+  ({ active }) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& svg': {
+      cursor: 'pointer',
+    },
+    '& svg:first-child': {
+      ...(active && {
+        opacity: '0.3',
+        cursor: 'not-allowed',
+      }),
+    },
+  }),
+);
 
 const Quantity = styled.span({
   fontSize: '2rem',
@@ -114,34 +116,14 @@ const CartButton = styled.button({
 });
 
 export default function MenuDetail({
+  menuQuantity,
   menu: {
     description, englishName, imagePath, name, price,
   },
+  onClickAddCart,
+  onClickIncreaseQuantity,
+  onClickDecreaseQuantity,
 }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const menuQuantity = useSelector((state) => state.menuQuantity);
-
-  useEffect(() => {
-    dispatch(initializeMenuQuantity());
-  }, []);
-
-  const handleClickAddToCart = () => {
-    dispatch(requestAddToCart())
-      .then(
-        () => navigate('/cart'),
-      );
-  };
-
-  const handleClickPlusOne = () => {
-    dispatch(menuQuantityPlusOne());
-  };
-
-  const handleClickMinusOne = () => {
-    dispatch(menuQuantityMinusOne());
-  };
-
   return (
     <>
       <MenuImage>
@@ -162,14 +144,14 @@ export default function MenuDetail({
         {price ? price.toLocaleString('ko-KR') : null}
         원
       </MenuPrice>
-      <MenuQuantity>
-        <BsFillDashCircleFill size="40" onClick={handleClickMinusOne} />
+      <MenuQuantity active={menuQuantity === 1}>
+        <BsFillDashCircleFill size="40" onClick={onClickDecreaseQuantity} />
         <Quantity>{menuQuantity}</Quantity>
-        <BsPlusCircleFill size="40" onClick={handleClickPlusOne} />
+        <BsPlusCircleFill size="40" onClick={onClickIncreaseQuantity} />
       </MenuQuantity>
       <ButtonDiv>
         <OrderButton>주문하기</OrderButton>
-        <CartButton onClick={handleClickAddToCart}>장바구니에 담기</CartButton>
+        <CartButton onClick={onClickAddCart}>장바구니에 담기</CartButton>
       </ButtonDiv>
     </>
   );

@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { loadMenu } from './store';
+import {
+  initializeMenuQuantity, loadMenu, menuQuantityMinusOne, menuQuantityPlusOne, requestAddToCart,
+} from './store';
 
 import MenuDetail from './MenuDetail';
 
@@ -16,16 +18,44 @@ export default function MenuDetailContainer() {
   const { menuId } = useParams();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const menuQuantity = useSelector((state) => state.menuQuantity);
 
   useEffect(() => {
     dispatch(loadMenu(menuId));
   }, []);
 
+  useEffect(() => {
+    dispatch(initializeMenuQuantity());
+  }, []);
+
+  const handleClickAddToCart = () => {
+    dispatch(requestAddToCart())
+      .then(
+        () => navigate('/cart'),
+      );
+  };
+
+  const handleClickPlusOne = () => {
+    dispatch(menuQuantityPlusOne());
+  };
+
+  const handleClickMinusOne = () => {
+    dispatch(menuQuantityMinusOne());
+  };
+
   const menu = useSelector((state) => state.menu);
 
   return (
     <MenuDetailStyle>
-      <MenuDetail menu={menu} />
+      <MenuDetail
+        menu={menu}
+        menuQuantity={menuQuantity}
+        onClickAddCart={handleClickAddToCart}
+        onClickIncreaseQuantity={handleClickPlusOne}
+        onClickDecreaseQuantity={handleClickMinusOne}
+      />
     </MenuDetailStyle>
   );
 }

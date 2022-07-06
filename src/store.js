@@ -480,6 +480,11 @@ function reducer(state = initialState, action = {}) {
   }
 
   if (action.type === MENU_QUANTITY_MINUS_ONE) {
+    if ((state.menuQuantity - 1) < 1) {
+      alert('최소 주문 수량은 1개입니다.');
+      return state;
+    }
+
     return {
       ...state,
       menuQuantity: state.menuQuantity - 1,
