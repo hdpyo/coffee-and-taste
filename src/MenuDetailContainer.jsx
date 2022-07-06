@@ -41,7 +41,10 @@ export default function MenuDetailContainer() {
     dispatch(menuQuantityPlusOne());
   };
 
-  const handleClickMinusOne = () => {
+  const handleClickMinusOne = (currentQuantity) => {
+    if (currentQuantity === 1) {
+      return;
+    }
     dispatch(menuQuantityMinusOne());
   };
 

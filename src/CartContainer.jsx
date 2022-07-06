@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useNavigate } from 'react-router-dom';
-
 import {
   addCheckedCartItem,
   cartMenuQuantityMinusOne,
@@ -20,11 +18,8 @@ import {
 
 import Cart from './Cart';
 
-import { CURRENT_PAGE_RELOAD } from './constants';
-
 export default function CartContainer() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const cartMenus = useSelector((state) => state.cartMenus);
   const checkedCartItems = useSelector((state) => state.checkedCartItems);
@@ -53,25 +48,34 @@ export default function CartContainer() {
   };
 
   const handleClickOrder = () => {
-    dispatch(requestOrder());
+    if (window.confirm('선택한 메뉴를 주문하시겠습니까?')) {
+      dispatch(requestOrder());
+    }
   };
 
   const handleClickQuantityPlusOne = (menuId) => {
     dispatch(cartMenuQuantityPlusOne(menuId));
   };
 
-  const handleClickQuantityMinusOne = (menuId) => {
+  const handleClickQuantityMinusOne = (menuId, currentQuantity) => {
+    if (currentQuantity === 1) {
+      return;
+    }
     dispatch(cartMenuQuantityMinusOne(menuId));
   };
 
   const handleClickUpdateItemQuantity = (menuId) => {
-    dispatch(requestUpdateCartItemQuantity(menuId))
-      .then(() => {
-        navigate(CURRENT_PAGE_RELOAD);
-      });
+    if (window.confirm('주문 수량을 변경하시겠습니까?')) {
+      dispatch(requestUpdateCartItemQuantity(menuId));
+    }
   };
 
-  const handleClickDeleteSelectedCartItems = () => {
+  const handleClickDeleteSelectedCartItems = (totalQuantity) => {
+    if (!totalQuantity) {
+      alert('삭제할 메뉴를 먼저 선택해주세요.');
+      return;
+    }
+
     if (window.confirm('선택한 메뉴를 삭제하시겠습니까?')) {
       dispatch(requestDeleteSelectedCartItem());
     }

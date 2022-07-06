@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { BsFillDashCircleFill, BsPlusCircleFill } from 'react-icons/bs';
 import { VscClose } from 'react-icons/vsc';
+import { Link } from 'react-router-dom';
 
 const CartContainerStyle = styled.div({
   width: '800px',
@@ -86,17 +87,17 @@ const CartItem = styled.div({
   gridTemplateColumns: '30% auto',
 });
 
-const CartItemImage = styled.div(
-  ({ url }) => ({
-    margin: '10px auto',
-    borderRadius: '50%',
-    width: '100px',
-    height: '100px',
-    ...(url && {
-      background: `url("https://coffee-and-taste.kro.kr${url}") center/100% no-repeat`,
-    }),
-  }),
-);
+const CartItemImage = styled.div({
+  width: '100px',
+  height: '100px',
+  margin: '10px auto',
+  overflow: 'hidden',
+  borderRadius: '50%',
+  '& img': {
+    width: '100%',
+    height: '100%',
+  },
+});
 
 const CartItemInfo = styled.div({
   display: 'flex',
@@ -196,23 +197,36 @@ const OrderDiv = styled.div({
   margin: '3rem 0',
 });
 
-const OrderButton = styled.button({
-  width: '30%',
-  height: '3rem',
-  color: '#00704a',
-  fontSize: '1.3rem',
-  borderRadius: '30px',
-  background: 'transparent',
-  border: '2px solid #00704a',
-  outline: 'none',
-  cursor: 'pointer',
-  transition: 'background-color .7s, color .7s',
-  '&:hover': {
-    color: '#fff',
-    backgroundColor: '#00704a',
-    textDecoration: 'underline',
-  },
-});
+const OrderButton = styled.button(
+  ({ active }) => ({
+    width: '30%',
+    height: '3rem',
+    fontSize: '1.3rem',
+    borderRadius: '30px',
+    transition: 'background-color .7s, color .3s',
+    ...(active
+      ? {
+        color: '#00704a',
+        cursor: 'pointer',
+        background: 'transparent',
+        border: '2px solid #00704a',
+        '&:hover': {
+          color: '#fff',
+          backgroundColor: '#00704a',
+          textDecoration: 'underline',
+        },
+
+      }
+      : {
+        color: '#fff',
+        cursor: 'not-allowed',
+        background: '#E9E9ED',
+        border: '2px solid #fff',
+      }
+    ),
+  }),
+
+);
 
 export default function Cart({
   cartMenus,
@@ -234,7 +248,11 @@ export default function Cart({
     onChange({ checked, value });
   };
 
-  if (cartMenus.length === 0) {
+  const alertNoQuantityToOrder = () => {
+    alert('주문할 메뉴를 먼저 선택해주세요.');
+  };
+
+  if (!cartMenus.length) {
     return (
       <CartContainerStyle>
         <CartTitle>장바구니</CartTitle>
@@ -251,7 +269,9 @@ export default function Cart({
       <CartTitle>장바구니</CartTitle>
       <hr />
       <RemoveButtonDiv>
-        <RemoveSelectedItemsButton onClick={removeSelectedCartItems}>
+        <RemoveSelectedItemsButton
+          onClick={() => removeSelectedCartItems(totalQuantity)}
+        >
           선택 삭제
         </RemoveSelectedItemsButton>
         <span>|</span>
@@ -263,7 +283,7 @@ export default function Cart({
         cartMenus.map(({
           id,
           menu: {
-            name, englishName, price, imagePath,
+            id: menuId, name, englishName, price, imagePath,
           },
           quantity,
         }) => {
@@ -281,6 +301,7 @@ export default function Cart({
                     name="menuId"
                     value={id}
                     onChange={handleChange}
+                    checked={checkedCartItems.includes(String(id))}
                   />
                   <VscClose
                     size="30"
@@ -289,7 +310,11 @@ export default function Cart({
                   />
                 </CartButtonGroup>
                 <CartItem>
-                  <CartItemImage url={imagePath} />
+                  <CartItemImage>
+                    <Link to={`/menus/${menuId}`}>
+                      <img src={`https://coffee-and-taste.kro.kr${imagePath}`} alt={name} />
+                    </Link>
+                  </CartItemImage>
                   <CartItemInfo>
                     <ItemName>{name}</ItemName>
                     <ItemEnglishName>{englishName}</ItemEnglishName>
@@ -300,7 +325,7 @@ export default function Cart({
                     <ItemQuantityUl>
                       <ItemQuantityLi active={quantity === 1}>
                         <BsFillDashCircleFill
-                          onClick={() => decreaseQuantityOne(id)}
+                          onClick={() => decreaseQuantityOne(id, quantity)}
                         />
                       </ItemQuantityLi>
                       <ItemQuantityLi>
@@ -342,7 +367,12 @@ export default function Cart({
         </TotalPriceDiv>
       </TotalQuantityAndPriceDiv>
       <OrderDiv>
-        <OrderButton onClick={onClick}>주문하기</OrderButton>
+        <OrderButton
+          active={totalQuantity > 0}
+          onClick={totalQuantity ? onClick : alertNoQuantityToOrder}
+        >
+          주문하기
+        </OrderButton>
       </OrderDiv>
     </CartContainerStyle>
   );

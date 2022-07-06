@@ -304,6 +304,10 @@ export function requestUpdateCartItemQuantity(menuId) {
       const data = await patchCartItemQuantity({ accessToken, menuId, quantity });
       if (data) {
         alert('수량을 변경하였습니다.');
+        dispatch(clearCheckedCartItems())
+          .then(
+            dispatch(loadCart()),
+          );
       }
     } catch (err) {
       // TODO : 에러 처리
@@ -320,7 +324,10 @@ export function requestRemoveCartItem(menuId) {
 
       if (responseStatus === 204) {
         alert('메뉴를 삭제했습니다.');
-        dispatch(loadCart());
+        dispatch(clearCheckedCartItems())
+          .then(
+            dispatch(loadCart()),
+          );
       }
     } catch (err) {
       // TODO : 에러 처리
@@ -337,7 +344,10 @@ export function requestDeleteSelectedCartItem() {
 
       if (responseStatus === 204) {
         alert('선택한 메뉴를 삭제했습니다.');
-        dispatch(loadCart());
+        dispatch(clearCheckedCartItems())
+          .then(
+            dispatch(loadCart()),
+          );
       }
     } catch (err) {
       // TODO : 에러 처리
@@ -354,7 +364,10 @@ export function requestDeleteAllCartItems() {
 
       if (responseStatus === 204) {
         alert('전체 메뉴를 삭제했습니다.');
-        dispatch(loadCart());
+        dispatch(clearCheckedCartItems())
+          .then(
+            dispatch(loadCart()),
+          );
       }
     } catch (err) {
       // TODO : 에러 처리
@@ -480,11 +493,6 @@ function reducer(state = initialState, action = {}) {
   }
 
   if (action.type === MENU_QUANTITY_MINUS_ONE) {
-    if ((state.menuQuantity - 1) < 1) {
-      alert('최소 주문 수량은 1개입니다.');
-      return state;
-    }
-
     return {
       ...state,
       menuQuantity: state.menuQuantity - 1,
@@ -517,10 +525,6 @@ function reducer(state = initialState, action = {}) {
       ...state,
       cartMenus: state.cartMenus.map((menu) => {
         if (menu.id === menuId) {
-          if ((menu.quantity - 1) < 1) {
-            alert('수량은 1보다 작을 수 없습니다.');
-            return menu;
-          }
           return ({ ...menu, quantity: menu.quantity - 1 });
         }
         return menu;
