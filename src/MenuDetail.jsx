@@ -8,6 +8,7 @@ const MenuImage = styled.div({
   margin: '30px auto',
   overflow: 'hidden',
   borderRadius: '50%',
+  isolation: 'isolate',
   '& img': {
     width: '100%',
     height: '100%',

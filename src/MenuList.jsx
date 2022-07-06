@@ -11,6 +11,7 @@ const MenuImage = styled.div({
   margin: '50px auto 20px auto',
   overflow: 'hidden',
   borderRadius: '50%',
+  isolation: 'isolate',
   '& img': {
     width: '100%',
     height: '100%',
