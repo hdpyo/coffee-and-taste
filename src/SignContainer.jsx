@@ -30,7 +30,7 @@ const Item = styled.li({
   minWidth: '6rem',
   padding: '0 .5rem',
   borderLeft: '3px solid #321414',
-  '&:first-child': {
+  '&:first-of-type': {
     borderLeft: 'none',
   },
   '& a': {
