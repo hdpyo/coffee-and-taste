@@ -157,3 +157,17 @@ export async function deleteAllCartItems({ accessToken }) {
 
   return response.status;
 }
+
+export async function getLoggedUserInfo({ accessToken }) {
+  const url = `${BASE_URL}/members/me`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const data = await response.json();
+  return data;
+}

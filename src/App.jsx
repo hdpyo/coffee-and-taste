@@ -17,7 +17,11 @@ import SignUpContainer from './SignUpContainer';
 import LoginPage from './LoginPage';
 import CartContainer from './CartContainer';
 
-import { loadCategories, setAccessToken } from './store';
+import {
+  loadCategories,
+  setAccessToken,
+  requestLoggedUserInfo,
+} from './store';
 
 import { loadItem } from './services/localStorage';
 
@@ -56,6 +60,7 @@ export default function App() {
   const accessToken = loadItem('accessToken');
   if (accessToken) {
     dispatch(setAccessToken(accessToken));
+    dispatch(requestLoggedUserInfo());
   }
 
   useEffect(() => {

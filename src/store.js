@@ -20,6 +20,7 @@ import {
   postLogin,
   postOrder,
   postSignUp,
+  getLoggedUserInfo,
 } from './services/api';
 
 import { saveItem } from './services/localStorage';
@@ -46,6 +47,14 @@ const initialState = {
   },
   cartMenus: [],
   checkedCartItems: [],
+  loggedUserInfo: {
+    id: '',
+    email: '',
+    nickname: '',
+    name: '',
+    phoneNumber: '',
+    birthDate: '',
+  },
 };
 
 // - 액션 생성 함수 정의
@@ -67,6 +76,7 @@ const MENU_QUANTITY_MINUS_ONE = 'MENU_QUANTITY_MINUS_ONE';
 const INITIALIZE_MENU_QUANTITY = 'INITIALIZE_MENU_QUANTITY';
 const CART_MENU_QUANTITY_PLUS_ONE = 'CART_MENU_QUANTITY_PLUS_ONE';
 const CART_MENU_QUANTITY_MINUS_ONE = 'CART_MENU_QUANTITY_MINUS_ONE';
+const SET_LOGGED_USER_INFO = 'SET_LOGGED_USER_INFO';
 
 export function updateLoginFields({ name, value }) {
   return {
@@ -129,6 +139,26 @@ export function requestLogin() {
       saveItem('accessToken', accessToken);
 
       dispatch(setAccessToken(accessToken));
+    } catch (e) {
+      // TODO : 에러 처리
+    }
+  };
+}
+
+export function setLoggedUserInfo(loggedUserInfo) {
+  return {
+    type: SET_LOGGED_USER_INFO,
+    payload: { loggedUserInfo },
+  };
+}
+
+export function requestLoggedUserInfo() {
+  return async (dispatch, getState) => {
+    const { accessToken } = getState();
+
+    try {
+      const loggedUserInfo = await getLoggedUserInfo({ accessToken });
+      dispatch(setLoggedUserInfo(loggedUserInfo));
     } catch (e) {
       // TODO : 에러 처리
     }
@@ -529,6 +559,14 @@ function reducer(state = initialState, action = {}) {
         }
         return menu;
       }),
+    };
+  }
+
+  if (action.type === SET_LOGGED_USER_INFO) {
+    const { loggedUserInfo } = action.payload;
+    return {
+      ...state,
+      loggedUserInfo,
     };
   }
 

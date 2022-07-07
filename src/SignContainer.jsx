@@ -57,6 +57,7 @@ export default function SignContainer() {
   const navigate = useNavigate();
 
   const accessToken = useSelector((state) => state.accessToken);
+  const loggedUserInfo = useSelector((state) => state.loggedUserInfo);
 
   const handleClickLogout = () => {
     dispatch(logout());
@@ -71,7 +72,8 @@ export default function SignContainer() {
           {
             accessToken ? (
               <Link to="/myPage">
-                OOO 님
+                {loggedUserInfo.name}
+                님
               </Link>
             ) : (
               <Link to="/signUp">
