@@ -129,22 +129,6 @@ export function requestSignUp() {
   };
 }
 
-export function requestLogin() {
-  return async (dispatch, getState) => {
-    const { loginFields: { email, password } } = getState();
-
-    try {
-      const accessToken = await postLogin({ email, password });
-
-      saveItem('accessToken', accessToken);
-
-      dispatch(setAccessToken(accessToken));
-    } catch (e) {
-      // TODO : 에러 처리
-    }
-  };
-}
-
 export function setLoggedUserInfo(loggedUserInfo) {
   return {
     type: SET_LOGGED_USER_INFO,
@@ -165,6 +149,23 @@ export function requestLoggedUserInfo() {
   };
 }
 
+export function requestLogin() {
+  return async (dispatch, getState) => {
+    const { loginFields: { email, password } } = getState();
+
+    try {
+      const accessToken = await postLogin({ email, password });
+
+      saveItem('accessToken', accessToken);
+
+      dispatch(setAccessToken(accessToken));
+
+      dispatch(requestLoggedUserInfo());
+    } catch (e) {
+      // TODO : 에러 처리
+    }
+  };
+}
 export function setCategories(categories) {
   return {
     type: SET_CATEGORIES,
