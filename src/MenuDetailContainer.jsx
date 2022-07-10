@@ -11,7 +11,7 @@ import MenuDetail from './MenuDetail';
 
 const MenuDetailStyle = styled.div({
   width: '700px',
-  margin: '0 auto',
+  margin: '0 auto', // TODO : grid 로 수정?
 });
 
 export default function MenuDetailContainer() {

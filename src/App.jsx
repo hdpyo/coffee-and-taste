@@ -27,12 +27,15 @@ import { loadItem } from './services/localStorage';
 
 import logo from './images/logo.png';
 
-const Container = styled.div({
-  margin: '0 auto',
-  width: '70%',
+const TopWrap = styled.div({
+  height: '250px',
 });
 
 const Header = styled.header({
+  position: 'fixed',
+  zIndex: '2',
+  top: 0,
+  left: 0,
   width: '100%',
   background: '#F6F5EF 100%',
 });
@@ -49,9 +52,9 @@ const Logo = styled.img({
   borderRadius: '50%',
 });
 
-const ContentContainer = styled.div({
-  marginTop: '50px',
-  height: 'auto',
+const Container = styled.div({
+  margin: '50px auto 0 auto',
+  width: '1100px',
 });
 
 export default function App() {
@@ -69,26 +72,26 @@ export default function App() {
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <Header>
-        <SignContainer />
-        <LogoContainer>
-          <Link to="/">
-            <Logo src={logo} alt="coffee-and-taste logo" />
-          </Link>
-        </LogoContainer>
-        <CategoryContainer />
-      </Header>
+      <TopWrap>
+        <Header>
+          <SignContainer />
+          <LogoContainer>
+            <Link to="/">
+              <Logo src={logo} alt="coffee-and-taste logo" />
+            </Link>
+          </LogoContainer>
+          <CategoryContainer />
+        </Header>
+      </TopWrap>
       <Container>
-        <ContentContainer>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signUp" element={<SignUpContainer />} />
-            <Route path="/cart" element={<CartContainer />} />
-            <Route path="/categories/:categoryId" element={<MenuGroupContainer />} />
-            <Route path="/menu-groups/:menuGroupId" element={<MenuListContainer />} />
-            <Route path="/menus/:menuId" element={<MenuDetailContainer />} />
-          </Routes>
-        </ContentContainer>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signUp" element={<SignUpContainer />} />
+          <Route path="/cart" element={<CartContainer />} />
+          <Route path="/categories/:categoryId" element={<MenuGroupContainer />} />
+          <Route path="/menu-groups/:menuGroupId" element={<MenuListContainer />} />
+          <Route path="/menus/:menuId" element={<MenuDetailContainer />} />
+        </Routes>
       </Container>
     </BrowserRouter>
   );

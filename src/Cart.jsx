@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const CartContainerStyle = styled.div({
   width: '800px',
-  margin: '0 auto',
+  margin: '0 auto', // TODO : margin-top 없이는 Header 와 딱 붙게 됨. grid 로 변경?
 });
 
 const RemoveButtonDiv = styled.div({

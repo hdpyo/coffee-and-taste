@@ -11,10 +11,10 @@ import { loadMenuList } from './store';
 import MenuList from './MenuList';
 
 const MenuContainerStyle = styled.div({
-  margin: '40px 0',
+  // margin: '0 0',
   display: 'grid',
   gridTemplateColumns: 'repeat(5, 1fr)',
-  gridGap: '1rem',
+  gridGap: '1rem', // TODO : 유효하지 않은 값 : 수정 필요
 });
 
 export default function MenuListContainer() {
