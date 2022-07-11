@@ -228,6 +228,19 @@ const OrderButton = styled.button(
 
 );
 
+const SelectAllItemsCheckboxDiv = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  '& span': {
+    fontSize: '1.2rem',
+  },
+});
+
+const SelectAllItemsCheckbox = styled.input({
+  width: '30px',
+  height: '30px',
+});
+
 export default function Cart({
   cartMenus,
   checkedCartItems,
@@ -239,13 +252,13 @@ export default function Cart({
   increaseQuantityOne,
   decreaseQuantityOne,
   updateItemQuantity,
+  checkOrUncheckAllItems,
 }) {
   let totalPayment = 0;
   let totalQuantity = 0;
 
-  const handleChange = (event) => {
-    const { checked, value } = event.target;
-    onChange({ checked, value });
+  const handleChange = (isChecked, checkedItemId) => {
+    onChange({ isChecked, checkedItemId });
   };
 
   const alertNoQuantityToOrder = () => {
@@ -268,7 +281,19 @@ export default function Cart({
     <CartContainerStyle>
       <CartTitle>장바구니</CartTitle>
       <hr />
+      <SelectAllItemsCheckboxDiv>
+        <SelectAllItemsCheckbox
+          type="checkbox"
+          checked={
+            checkedCartItems.length === 0 ? false
+              : checkedCartItems.length === cartMenus.length
+          }
+          onChange={(e) => checkOrUncheckAllItems(e.target.checked, cartMenus)}
+        />
+        <span>전체 선택</span>
+      </SelectAllItemsCheckboxDiv>
       <RemoveButtonDiv>
+
         <RemoveSelectedItemsButton
           onClick={() => removeSelectedCartItems(totalQuantity)}
         >
@@ -287,7 +312,7 @@ export default function Cart({
           },
           quantity,
         }) => {
-          if (checkedCartItems.includes(String(id))) {
+          if (checkedCartItems.includes(id)) {
             totalPayment += (price * quantity);
             totalQuantity += quantity;
           }
@@ -300,8 +325,8 @@ export default function Cart({
                     type="checkbox"
                     name="menuId"
                     value={id}
-                    onChange={handleChange}
-                    checked={checkedCartItems.includes(String(id))}
+                    onChange={(e) => handleChange(e.target.checked, id)}
+                    checked={checkedCartItems.includes(id)}
                   />
                   <VscClose
                     size="30"

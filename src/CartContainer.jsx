@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
+  addAllCartItems,
   addCheckedCartItem,
   cartMenuQuantityMinusOne,
   cartMenuQuantityPlusOne,
@@ -25,20 +25,26 @@ export default function CartContainer() {
   const checkedCartItems = useSelector((state) => state.checkedCartItems);
 
   useEffect(() => {
-    dispatch(loadCart());
     dispatch(clearCheckedCartItems());
+    dispatch(loadCart());
   }, []);
 
-  const checkedItemHandler = (isChecked, checkedItemId) => {
+  const handleChangeCheckItem = ({ isChecked, checkedItemId }) => {
     if (isChecked) {
       dispatch(addCheckedCartItem(checkedItemId));
-    } else if (!isChecked) {
+    } else {
       dispatch(removeUncheckedCartItem(checkedItemId));
     }
   };
 
-  const handleChange = ({ checked, value }) => {
-    checkedItemHandler(checked, value);
+  const handleChangeCheckOrUncheckAllItems = (isChecked, cartItems) => {
+    if (isChecked) {
+      const checkedItems = [];
+      cartItems.forEach((cartItem) => { checkedItems.push(cartItem.id); });
+      dispatch(addAllCartItems(checkedItems));
+    } else {
+      dispatch(addAllCartItems([]));
+    }
   };
 
   const handleClickRemoveCartItem = (menuId) => {
@@ -93,12 +99,13 @@ export default function CartContainer() {
       checkedCartItems={checkedCartItems}
       removeSelectedCartItems={handleClickDeleteSelectedCartItems}
       removeAllCartItems={handleClickDeleteAllCartItems}
-      onChange={handleChange}
+      onChange={handleChangeCheckItem}
       onClick={handleClickOrder}
       removeCartItem={handleClickRemoveCartItem}
       increaseQuantityOne={handleClickQuantityPlusOne}
       decreaseQuantityOne={handleClickQuantityMinusOne}
       updateItemQuantity={handleClickUpdateItemQuantity}
+      checkOrUncheckAllItems={handleChangeCheckOrUncheckAllItems}
     />
   );
 }

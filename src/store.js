@@ -71,6 +71,7 @@ const SET_CART_MENUS = 'SET_CART_MENUS';
 const ADD_CHECKED_CART_ITEM = 'ADD_CHECKED_CART_ITEM';
 const REMOVE_UNCHECKED_CART_ITEM = 'REMOVE_UNCHECKED_CART_ITEM';
 const CLEAR_CHECKED_CART_ITEMS = 'CLEAR_CHECKED_CART_ITEMS';
+const ADD_ALL_CART_ITEMS = 'ADD_ALL_CART_ITEMS';
 const MENU_QUANTITY_PLUS_ONE = 'MENU_QUANTITY_PLUS_ONE';
 const MENU_QUANTITY_MINUS_ONE = 'MENU_QUANTITY_MINUS_ONE';
 const INITIALIZE_MENU_QUANTITY = 'INITIALIZE_MENU_QUANTITY';
@@ -259,6 +260,13 @@ export function removeUncheckedCartItem(uncheckedMenuId) {
 export function clearCheckedCartItems() {
   return {
     type: CLEAR_CHECKED_CART_ITEMS,
+  };
+}
+
+export function addAllCartItems(checkedCartItems) {
+  return {
+    type: ADD_ALL_CART_ITEMS,
+    payload: { checkedCartItems },
   };
 }
 
@@ -506,6 +514,13 @@ function reducer(state = initialState, action = {}) {
       checkedCartItems: [
         ...state.checkedCartItems.filter((item) => item !== action.payload.uncheckedMenuId),
       ],
+    };
+  }
+
+  if (action.type === ADD_ALL_CART_ITEMS) {
+    return {
+      ...state,
+      checkedCartItems: action.payload.checkedCartItems,
     };
   }
 
