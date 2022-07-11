@@ -135,7 +135,7 @@ export default function MenuDetail({
       <hr />
       <MenuDescription>
         {description ? description.split('\n').map((line) => (
-          <span>
+          <span key={line}>
             {line}
             <br />
           </span>
