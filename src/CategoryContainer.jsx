@@ -29,6 +29,7 @@ const Category = styled.div(
       '&:after': {
         display: 'block',
         content: '""',
+        marginTop: '10px',
         borderBottom: '4px solid green',
         ...(active || {
           transform: 'scaleX(0)',
