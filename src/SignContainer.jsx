@@ -78,7 +78,7 @@ export default function SignContainer() {
             ) : (
               <Link to="/signUp">
                 Sign Up
-                <FiUserPlus size="1.5rem" />
+                <FiUserPlus size="20" />
               </Link>
             )
           }
@@ -88,7 +88,7 @@ export default function SignContainer() {
             <Item>
               <Link to="/cart">
                 Cart
-                <TiShoppingCart size="1.5rem" />
+                <TiShoppingCart size="20" />
               </Link>
             </Item>
           ) : null
@@ -98,12 +98,12 @@ export default function SignContainer() {
             accessToken ? (
               <Link to="/logout" onClick={handleClickLogout}>
                 Logout
-                <FiLogOut size="1.5rem" />
+                <FiLogOut size="20" />
               </Link>
             ) : (
               <Link to="/login">
                 Login
-                <FiLogIn size="1.5rem" />
+                <FiLogIn size="20" />
               </Link>
             )
           }
