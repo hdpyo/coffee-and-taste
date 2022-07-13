@@ -26,6 +26,7 @@ import {
 import { loadItem } from './services/localStorage';
 
 import logo from './images/logo.png';
+import AuthenticationLogin from './AuthenticationLogin';
 
 const TopWrap = styled.div({
   height: '250px',
@@ -87,7 +88,14 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signUp" element={<SignUpContainer />} />
-          <Route path="/cart" element={<CartContainer />} />
+          <Route
+            path="/cart"
+            element={(
+              <AuthenticationLogin>
+                <CartContainer />
+              </AuthenticationLogin>
+            )}
+          />
           <Route path="/categories/:categoryId" element={<MenuGroupContainer />} />
           <Route path="/menu-groups/:menuGroupId" element={<MenuListContainer />} />
           <Route path="/menus/:menuId" element={<MenuDetailContainer />} />

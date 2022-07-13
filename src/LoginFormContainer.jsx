@@ -21,7 +21,7 @@ export default function LoginFormContainer() {
 
   const handleSubmit = () => {
     dispatch(requestLogin());
-    navigate('/');
+    navigate(-1);
   };
 
   const handleClickLogout = () => {

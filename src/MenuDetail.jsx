@@ -121,9 +121,10 @@ export default function MenuDetail({
   menu: {
     description, englishName, imagePath, name, price,
   },
-  onClickAddCart,
   onClickIncreaseQuantity,
   onClickDecreaseQuantity,
+  onClickOrder,
+  onClickAddCart,
 }) {
   return (
     <>
@@ -151,7 +152,7 @@ export default function MenuDetail({
         <BsPlusCircleFill size="40" onClick={onClickIncreaseQuantity} />
       </MenuQuantity>
       <ButtonDiv>
-        <OrderButton>주문하기</OrderButton>
+        <OrderButton onClick={onClickOrder}>주문하기</OrderButton>
         <CartButton onClick={onClickAddCart}>장바구니에 담기</CartButton>
       </ButtonDiv>
     </>
