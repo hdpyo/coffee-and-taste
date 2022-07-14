@@ -4,7 +4,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  initializeMenuQuantity, loadMenu, menuQuantityMinusOne, menuQuantityPlusOne, requestAddToCart,
+  initializeMenuQuantity,
+  loadMenu,
+  menuQuantityMinusOne,
+  menuQuantityPlusOne,
+  requestAddToCart,
+  requestSingleOrder,
 } from './store';
 
 import MenuDetail from './MenuDetail';
@@ -38,10 +43,12 @@ export default function MenuDetailContainer() {
       return;
     }
 
-    dispatch(requestAddToCart())
-      .then(
-        () => navigate('/cart'),
-      );
+    if (window.confirm('이 메뉴를 장바구니에 담으시겠습니까?')) {
+      dispatch(requestAddToCart())
+        .then(
+          () => navigate('/cart'),
+        );
+    }
   };
 
   const handleClickPlusOne = () => {
@@ -59,9 +66,14 @@ export default function MenuDetailContainer() {
     if (!accessToken) {
       alert('로그인이 필요한 서비스입니다.');
       navigate('/login');
+      return;
     }
-
     // TODO : 장바구니에 담지 않고 바로 주문하기
+    if (window.confirm('주문하시겠습니까?')) {
+      dispatch(requestSingleOrder()).then(
+        () => navigate('/'),
+      );
+    }
   };
 
   const menu = useSelector((state) => state.menu);

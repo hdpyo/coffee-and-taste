@@ -101,6 +101,24 @@ export async function postOrder({ accessToken, checkedCartItems }) {
   return data;
 }
 
+export async function postSingleOrder({ accessToken, menuId, quantity }) {
+  const url = `${BASE_URL}/orders`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      menuId,
+      quantity,
+    }),
+  });
+
+  const data = await response.json();
+  return data;
+}
+
 export async function patchCartItemQuantity({ accessToken, menuId, quantity }) {
   const url = `${BASE_URL}/cart/cart-menus/${menuId}`;
   const response = await fetch(url, {
